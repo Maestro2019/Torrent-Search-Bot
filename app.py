@@ -25,7 +25,10 @@ while True:
             except Exception as e:
                 print(e)
                 continue
-    
+            
+            if message == "/status":
+                bot_send_message("Bot is alive and active !!")
+                
             if message == "/daily":
                 res = api.get_search_result(api.DAILY)
                 reply = ""
