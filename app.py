@@ -14,6 +14,7 @@ def app(*args):
     bot = telegram_chatbot("config.cfg")
     update_id = None
     from_ = None
+    torrent_search_results = []
 
     while True:
         updates = bot.get_updates(offset=update_id)
@@ -24,7 +25,7 @@ def app(*args):
                 from_ = item["message"]["from"]
                 try:
                     message = item["message"]["text"]
-                    print(update_id, message)
+                    print(update_id, "-->", message)
 
                 except Exception as e:
                     print(e)
@@ -34,10 +35,20 @@ def app(*args):
                     bot_send_message("Bot is alive and active !!")
                     
                 if message == "/daily":
-                    res = api.get_search_result(api.DAILY)
-                    for row in res:
-                        reply = "<b>{no}: {name}</b>\n\n<i>Size: {size}\nURL: {url}</i>".format(no=row['no'], name=row['name'], size=row['size'], url=row['url'])
-                        bot_send_message(reply)
+                    torrent_search_results = api.get_search_result(api.DAILY)
+                    reply = ""
+                    for row in torrent_search_results:
+                        reply += "<b>{no}: {name}</b>\n<i>Size: {size}</i>\n\n".format(no=row['no'], name=row['name'], size=row['size'])
+                    bot_send_message(reply)
+                
+                if message.isnumeric():
+                    index = int(message)-1
+                    if index >= len(torrent_search_results):
+                        bot_send_message("Number not matching with our result")
+                        continue
+                    url = torrent_search_results[index]['url']
+                    magnet = api.get_magnet(url)
+                    bot_send_message(magnet)
 
 
 # # for testing purpose

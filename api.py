@@ -31,7 +31,7 @@ def get_search_result(url):
 
 def get_magnet(url):
     # gets the magnet from the given url
-    pg = requests.get(url)
+    pg = requests.get(URL+ url)
     soup = BeautifulSoup(pg.content, "html.parser")
     anchor = soup.find('a', href=re.compile('magnet.*'))
     return anchor['href']
