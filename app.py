@@ -1,7 +1,7 @@
 import api
 from bot import telegram_chatbot
 
-def app():
+def app(*args):
 
     def bot_send_message(*args, sender = None):
         '''send the message to telegram'''
@@ -17,7 +17,7 @@ def app():
 
     while True:
         updates = bot.get_updates(offset=update_id)
-        updates = updates["result"]
+        updates = updates.get("result")
         if updates:
             for item in updates:
                 update_id = item["update_id"]
@@ -38,3 +38,7 @@ def app():
                     for row in res:
                         reply = "<b>{no}: {name}</b>\n\n<i>Size: {size}\nURL: {url}</i>".format(no=row['no'], name=row['name'], size=row['size'], url=row['url'])
                         bot_send_message(reply)
+
+
+# # for testing purpose
+# app()
