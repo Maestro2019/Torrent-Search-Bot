@@ -21,9 +21,9 @@ def app(*args):
         updates = updates.get("result")
         if updates:
             for item in updates:
-                update_id = item["update_id"]
-                from_ = item["message"]["from"]
                 try:
+                    update_id = item["update_id"]
+                    from_ = item["message"]["from"]
                     message = item["message"]["text"]
                     print(update_id, "-->", message)
 
@@ -51,5 +51,5 @@ def app(*args):
                     bot_send_message(magnet)
 
 
-# # for testing purpose
-# app()
+# run
+app()
